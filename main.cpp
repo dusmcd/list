@@ -12,6 +12,8 @@ using std::endl;
 
 bool test_add(int);
 bool test_slice(int, int);
+bool test_sort();
+bool test_extend();
 void run_tests();
 
 int main()
@@ -24,7 +26,7 @@ int main()
 
 void run_tests()
 {
-    int total = 2;
+    int total = 4;
     int passed = 0;
 
     if (test_add(15))
@@ -42,6 +44,20 @@ void run_tests()
     }
     else
         cout << "test_slice failed" << endl;
+    if (test_extend())
+    {
+        cout << "test_extend passed" << endl;
+        passed++;
+    }
+    else
+        cout << "test_extend failed" << endl;
+    if (test_sort())
+    {
+        cout << "test_sort passed" << endl;
+        passed++;
+    }
+    else
+        cout << "test_sort failed" << endl;
 
     cout << passed << " of " << total << " tests passed." << endl;
 }
@@ -77,4 +93,51 @@ bool test_add(int count)
     }
 
     return correct_count && true;
+}
+
+bool test_sort()
+{
+    List list = List();
+    int nums[7] = {7, 3, 1, 2, -5, 10, 6};
+    int sorted_nums[7] = {-5, 1, 2, 3, 6, 7, 10};
+    for (int i = 0; i < 7; i++)
+        list.add(nums[i]);
+    
+    List sorted_list = list.sort();
+
+    for (int i = 0; i < 7; i++)
+    {
+        if (sorted_list.get_val(i) != sorted_nums[i])
+            return false;
+    }
+
+    return true;
+}
+
+bool test_extend()
+{
+    List list = List();
+    List another_list = List();
+
+    for (int i = 0; i < 10; i++)
+    {
+        if (i > 4)
+            another_list.add(i + 1);
+        else
+            list.add(i + 1);
+    }
+    
+    list.extend(another_list);
+
+    for (int i = 0; i < 10; i++)
+    {
+        if (i > 4 && list.get_val(i) != another_list.get_val(i - 5))
+        {
+
+            cout << "another_list[" << i - 5 << "]: " << another_list.get_val(i - 5) << endl;
+            return false;
+        }
+    }
+
+    return true;
 }

@@ -8,6 +8,13 @@ using std::endl;
     private methods
 */
 
+void print_list(List list)
+{
+    for (int i = 0; i < list.count(); i++)
+        cout << list.get_val(i) << " ";
+    
+    cout << endl;
+}
 void List::_resize_arr()
 {
     int* new_arr = new int[_size + 10];
@@ -40,13 +47,13 @@ List List::_merge(List left, List right)
 
     while(true)
     {
-        if (left_i >= left.count() - 1)
+        if (left_i > left.count() - 1)
         {
             // add the rest of the right array to the merged list
             merged_list.extend(right.slice(right_i, right.count()));
             break;
         }
-        else if (right_i >= right.count() - 1)
+        else if (right_i > right.count() - 1)
         {
             // add the rest of the left array to the merged list
             merged_list.extend(left.slice(left_i, left.count()));
@@ -115,16 +122,16 @@ List List::slice(int start, int end)
     List list = List();
     try
     {
-        if (start < 0 || end > this->count() - 1)
-            throw;
+        if (start < 0 || end > this->count() + 1)
+            throw (start);
         for (int i = start; i < end; i++)
             list.add(this->get_val(i));
 
         return list;
     }
-    catch(const std::exception& e)
+    catch(int start)
     {
-        std::cerr << e.what() << '\n';
+        cout << "slice args out of range" << endl;
         return list;
     }
     
@@ -137,9 +144,9 @@ List List::sort()
 
 void List::extend(List list)
 {
-    int new_count = this->count() + list.count();
+    int count = list.count();
 
-    for (int i = 0; i < new_count; i++)
+    for (int i = 0; i < count; i++)
     {
         this->add(list.get_val(i));
     }
