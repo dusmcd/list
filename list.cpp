@@ -1,0 +1,152 @@
+#include "list.hpp"
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
+/*
+    private methods
+*/
+
+void List::_resize_arr()
+{
+    int* new_arr = new int[_size + 10];
+    for (int i = 0; i < _size; i++)
+        new_arr[i] = _internal_arr[i];
+    
+    delete [] _internal_arr;
+    _internal_arr = new_arr;
+    new_arr = nullptr;
+    _size += 10;
+}
+
+List List::_merge_sort(List list)
+{
+    if (list.count() == 1)
+        return list;
+    
+    int middle = list.count() / 2;
+    List left = list.slice(0, middle);
+    List right = list.slice(middle, list.count());
+
+    return _merge(_merge_sort(left), _merge_sort(right));
+}
+
+List List::_merge(List left, List right)
+{
+    List merged_list = List();
+    int left_i = 0;
+    int right_i = 0;
+
+    while(true)
+    {
+        if (left_i >= left.count() - 1)
+        {
+            // add the rest of the right array to the merged list
+            merged_list.extend(right.slice(right_i, right.count()));
+            break;
+        }
+        else if (right_i >= right.count() - 1)
+        {
+            // add the rest of the left array to the merged list
+            merged_list.extend(left.slice(left_i, left.count()));
+            break;
+        }
+        else if (left.get_val(left_i) <= right.get_val(right_i))
+        {
+            merged_list.add(left.get_val(left_i));
+            left_i++;
+        }
+        else if (right.get_val(right_i) <= left.get_val(left_i))
+        {
+            merged_list.add(right.get_val(right_i));
+            right_i++;
+        }
+    }
+
+    return merged_list;
+}
+
+
+/*
+    public methods
+*/
+
+List::List()
+{
+    _internal_arr = new int[10];
+}
+
+List::List(int init_size)
+{
+    _internal_arr = new int[init_size];
+}
+
+int List::count()
+{
+    return _last_idx_val + 1;
+}
+
+void List::add(int num)
+{
+    if (_last_idx_val + 1 >= _size)
+    {
+        _resize_arr();
+    }
+    _internal_arr[_last_idx_val + 1] = num;
+    _last_idx_val++;
+}
+
+int List::get_val(int idx)
+{
+    try {
+        if (idx > _last_idx_val)
+            throw (idx);
+        return _internal_arr[idx];
+    } catch(int idx) {
+        cout << "index " << idx << " is out of bounds" << endl;
+        return -1;
+    }
+}
+
+
+List List::slice(int start, int end)
+{
+    List list = List();
+    try
+    {
+        if (start < 0 || end > this->count() - 1)
+            throw;
+        for (int i = start; i < end; i++)
+            list.add(this->get_val(i));
+
+        return list;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return list;
+    }
+    
+}
+
+List List::sort()
+{
+    return _merge_sort(*this);
+}
+
+void List::extend(List list)
+{
+    int new_count = this->count() + list.count();
+
+    for (int i = 0; i < new_count; i++)
+    {
+        this->add(list.get_val(i));
+    }
+}
+
+List::~List()
+{
+    // delete [] _internal_arr;
+    // _internal_arr = nullptr;
+}
