@@ -6,6 +6,7 @@ main.o: main.cpp list.hpp
 
 test: main.o list.o
 	g++ $^ -o test
+	./test
 
 clean:
 	rm *.o test *.gch

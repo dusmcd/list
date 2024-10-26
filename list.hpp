@@ -11,14 +11,14 @@ class List
         int _size = 10;
         int _last_idx_val = -1;
         void _resize_arr();
-        List _merge_sort(List list);
-        List _merge(List left, List right);
+        List _merge_sort(List *list);
+        List _merge(List *left, List *right);
 
     public:
         List();
         List(int init_size);
         void add(int num);
-        void extend(List list);
+        void extend(List *list);
         int get_val(int idx);
         void set_val(int idx, int val);
         List sort();

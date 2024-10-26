@@ -127,7 +127,7 @@ bool test_extend()
             list.add(i + 1);
     }
     
-    list.extend(another_list);
+    list.extend(&another_list);
 
     for (int i = 0; i < 10; i++)
     {

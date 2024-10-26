@@ -23,23 +23,24 @@ void List::_resize_arr()
     
     delete [] _internal_arr;
     _internal_arr = new_arr;
-    new_arr = nullptr;
     _size += 10;
 }
 
-List List::_merge_sort(List list)
+List List::_merge_sort(List *list)
 {
-    if (list.count() == 1)
-        return list;
+    if (list->count() == 1)
+        return *list;
     
-    int middle = list.count() / 2;
-    List left = list.slice(0, middle);
-    List right = list.slice(middle, list.count());
+    int middle = list->count() / 2;
+    List left = list->slice(0, middle);
+    List right = list->slice(middle, list->count());
 
-    return _merge(_merge_sort(left), _merge_sort(right));
+    List r_left = _merge_sort(&left);
+    List r_right = _merge_sort(&right);
+    return _merge(&r_left, &r_right);
 }
 
-List List::_merge(List left, List right)
+List List::_merge(List *left, List *right)
 {
     List merged_list = List();
     int left_i = 0;
@@ -47,26 +48,28 @@ List List::_merge(List left, List right)
 
     while(true)
     {
-        if (left_i > left.count() - 1)
+        if (left_i > left->count() - 1)
         {
             // add the rest of the right array to the merged list
-            merged_list.extend(right.slice(right_i, right.count()));
+            List remaining = right->slice(right_i, right->count());
+            merged_list.extend(&remaining);
             break;
         }
-        else if (right_i > right.count() - 1)
+        else if (right_i > right->count() - 1)
         {
             // add the rest of the left array to the merged list
-            merged_list.extend(left.slice(left_i, left.count()));
+            List remaining = left->slice(left_i, left->count());
+            merged_list.extend(&remaining);
             break;
         }
-        else if (left.get_val(left_i) <= right.get_val(right_i))
+        else if (left->get_val(left_i) <= right->get_val(right_i))
         {
-            merged_list.add(left.get_val(left_i));
+            merged_list.add(left->get_val(left_i));
             left_i++;
         }
-        else if (right.get_val(right_i) <= left.get_val(left_i))
+        else if (right->get_val(right_i) <= left->get_val(left_i))
         {
-            merged_list.add(right.get_val(right_i));
+            merged_list.add(right->get_val(right_i));
             right_i++;
         }
     }
@@ -139,16 +142,16 @@ List List::slice(int start, int end)
 
 List List::sort()
 {
-    return _merge_sort(*this);
+    return _merge_sort(this);
 }
 
-void List::extend(List list)
+void List::extend(List *list)
 {
-    int count = list.count();
+    int count = list->count();
 
     for (int i = 0; i < count; i++)
     {
-        this->add(list.get_val(i));
+        this->add(list->get_val(i));
     }
 }
 
