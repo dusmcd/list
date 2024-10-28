@@ -14,6 +14,8 @@ bool test_add(int);
 bool test_slice(int, int);
 bool test_sort();
 bool test_extend();
+bool test_find();
+bool test_contains();
 void run_tests();
 
 int main()
@@ -26,7 +28,7 @@ int main()
 
 void run_tests()
 {
-    int total = 4;
+    int total = 6;
     int passed = 0;
 
     if (test_add(15))
@@ -58,6 +60,20 @@ void run_tests()
     }
     else
         cout << "test_sort failed" << endl;
+    if (test_find())
+    {
+        cout << "test_find passed" << endl;
+        passed++;
+    }
+    else
+        cout << "test_find failed" << endl;
+    if (test_contains())
+    {
+        cout << "test_contains passed" << endl;
+        passed++;
+    }
+    else
+        cout << "test_contains failed" << endl;
 
     cout << passed << " of " << total << " tests passed." << endl;
 }
@@ -140,4 +156,24 @@ bool test_extend()
     }
 
     return true;
+}
+
+bool test_find()
+{
+    List list = List();
+    int nums[7] = {2, 4, 6, 8, 10, 12, 14};
+    for (int i = 0; i < 7; i++)
+        list.add(nums[i]);
+    
+    return list.find(6) == 2 && list.find(15) == -1;
+}
+
+bool test_contains()
+{
+    List list = List();
+    int nums[5] = {1, 2, 3, 4, 5};
+    for (int i = 0; i < 5; i++)
+        list.add(nums[i]);
+    
+    return list.contains(3) && !list.contains(10);
 }

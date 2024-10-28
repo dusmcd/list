@@ -19,12 +19,16 @@ class List
         List(int init_size);
         void add(int num);
         void extend(List *list);
+
+        // returns the index for the given value
+        // returns -1 if the value is not found
+        int find(int val);
+        bool contains(int val);
         int get_val(int idx);
         void set_val(int idx, int val);
         List sort();
         List slice(int start, int end);
         int count();
-        ~List();
 };
 
 

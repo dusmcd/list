@@ -154,9 +154,25 @@ void List::extend(List *list)
         this->add(list->get_val(i));
     }
 }
-
-List::~List()
+int List::find(int val)
 {
-    // delete [] _internal_arr;
-    // _internal_arr = nullptr;
+    for (int i = 0; i < this->count(); i++)
+    {
+        if (this->get_val(i) == val)
+            return i;
+    }
+
+    return -1;
 }
+
+bool List::contains(int val)
+{
+    for (int i = 0; i < this->count(); i++)
+    {
+        if (this->get_val(i) == val)
+            return true;
+    }
+
+    return false;
+}
+
