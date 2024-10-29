@@ -26,7 +26,7 @@ void List::_resize_arr()
     _size += 10;
 }
 
-List List::_merge_sort(List *list)
+List List::_merge_sort(const List *list)
 {
     if (list->count() == 1)
         return *list;
@@ -40,7 +40,7 @@ List List::_merge_sort(List *list)
     return _merge(&r_left, &r_right);
 }
 
-List List::_merge(List *left, List *right)
+List List::_merge(const List *left, const List *right)
 {
     List merged_list = List();
     int left_i = 0;
@@ -92,7 +92,7 @@ List::List(int init_size)
     _internal_arr = new int[init_size];
 }
 
-int List::count()
+int List::count() const
 {
     return _last_idx_val + 1;
 }
@@ -107,7 +107,7 @@ void List::add(int num)
     _last_idx_val++;
 }
 
-int List::get_val(int idx)
+int List::get_val(int idx) const
 {
     try {
         if (idx > _last_idx_val)
@@ -120,7 +120,7 @@ int List::get_val(int idx)
 }
 
 
-List List::slice(int start, int end)
+List List::slice(int start, int end) const
 {
     List list = List();
     try
@@ -145,7 +145,7 @@ List List::sort()
     return _merge_sort(this);
 }
 
-void List::extend(List *list)
+void List::extend(const List *list)
 {
     int count = list->count();
 
@@ -154,7 +154,7 @@ void List::extend(List *list)
         this->add(list->get_val(i));
     }
 }
-int List::find(int val)
+int List::find(int val) const
 {
     for (int i = 0; i < this->count(); i++)
     {
@@ -165,7 +165,7 @@ int List::find(int val)
     return -1;
 }
 
-bool List::contains(int val)
+bool List::contains(int val) const
 {
     for (int i = 0; i < this->count(); i++)
     {

@@ -11,24 +11,24 @@ class List
         int _size = 10;
         int _last_idx_val = -1;
         void _resize_arr();
-        List _merge_sort(List *list);
-        List _merge(List *left, List *right);
+        List _merge_sort(const List *list);
+        List _merge(const List *left, const List *right);
 
     public:
         List();
         List(int init_size);
         void add(int num);
-        void extend(List *list);
+        void extend(const List *list);
 
         // returns the index for the given value
         // returns -1 if the value is not found
-        int find(int val);
-        bool contains(int val);
-        int get_val(int idx);
+        int find(int val) const;
+        bool contains(int val) const;
+        int get_val(int idx) const;
         void set_val(int idx, int val);
         List sort();
-        List slice(int start, int end);
-        int count();
+        List slice(int start, int end) const;
+        int count() const;
 };
 
 
