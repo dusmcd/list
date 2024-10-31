@@ -84,14 +84,16 @@ bool test_slice(int start, int end)
     for (int i = 0; i < end + 10; i++)
         list.add(i * 5);
     
-    List newList = list.slice(start, end);
+    List* newList = list.slice(start, end);
     
-    for (int i = 0; i < end; i++)
+    for (int i = start; i < end; i++)
     {
-        if (list.get_val(i) != newList.get_val(i))
+        if (list.get_val(i) != newList->get_val(i))
             return false;
     }
-    return newList.count() == (end - start) && true;
+    bool count_equals = newList->count() == (end - start);
+    delete newList;
+    return count_equals;
 }
 
 bool test_add(int count)

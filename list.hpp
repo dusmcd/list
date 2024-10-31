@@ -13,10 +13,12 @@ class List
         void _resize_arr();
         List _merge_sort(const List *list);
         List _merge(const List *left, const List *right);
+        void _free_memory(int* i_pointer);
 
     public:
         List();
         List(int init_size);
+        ~List();
         void add(int num);
         void extend(const List *list);
 
@@ -27,7 +29,7 @@ class List
         int get_val(int idx) const;
         void set_val(int idx, int val);
         List sort();
-        List slice(int start, int end) const;
+        List* slice(int start, int end) const;
         int count() const;
 };
 

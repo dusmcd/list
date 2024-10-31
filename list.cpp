@@ -8,6 +8,11 @@ using std::endl;
     private methods
 */
 
+void List::_free_memory(int* i_pointer)
+{
+    delete [] i_pointer;
+}
+
 void print_list(List list)
 {
     for (int i = 0; i < list.count(); i++)
@@ -21,8 +26,9 @@ void List::_resize_arr()
     for (int i = 0; i < _size; i++)
         new_arr[i] = _internal_arr[i];
     
-    delete [] _internal_arr;
+    _free_memory(_internal_arr);
     _internal_arr = new_arr;
+
     _size += 10;
 }
 
@@ -32,11 +38,11 @@ List List::_merge_sort(const List *list)
         return *list;
     
     int middle = list->count() / 2;
-    List left = list->slice(0, middle);
-    List right = list->slice(middle, list->count());
+    List* left = list->slice(0, middle);
+    List* right = list->slice(middle, list->count());
 
-    List r_left = _merge_sort(&left);
-    List r_right = _merge_sort(&right);
+    List r_left = _merge_sort(left);
+    List r_right = _merge_sort(right);
     return _merge(&r_left, &r_right);
 }
 
@@ -51,15 +57,15 @@ List List::_merge(const List *left, const List *right)
         if (left_i > left->count() - 1)
         {
             // add the rest of the right array to the merged list
-            List remaining = right->slice(right_i, right->count());
-            merged_list.extend(&remaining);
+            List* remaining = right->slice(right_i, right->count());
+            merged_list.extend(remaining);
             break;
         }
         else if (right_i > right->count() - 1)
         {
             // add the rest of the left array to the merged list
-            List remaining = left->slice(left_i, left->count());
-            merged_list.extend(&remaining);
+            List* remaining = left->slice(left_i, left->count());
+            merged_list.extend(remaining);
             break;
         }
         else if (left->get_val(left_i) <= right->get_val(right_i))
@@ -120,15 +126,15 @@ int List::get_val(int idx) const
 }
 
 
-List List::slice(int start, int end) const
+List* List::slice(int start, int end) const
 {
-    List list = List();
+    List* list = new List();
     try
     {
-        if (start < 0 || end > this->count() + 1)
+        if (start < 0 || end > count() + 1)
             throw (start);
         for (int i = start; i < end; i++)
-            list.add(this->get_val(i));
+            list->add(get_val(i));
 
         return list;
     }
@@ -176,3 +182,7 @@ bool List::contains(int val) const
     return false;
 }
 
+List::~List()
+{
+    _free_memory(_internal_arr);
+}
