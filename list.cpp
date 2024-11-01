@@ -34,18 +34,17 @@ void List::_resize_arr()
 
 void List::_quicksort(int pivot_i, int start_i)
 {
-    if (pivot_i != start_i)
+    if (start_i < pivot_i)
     {
         int new_pivot = _partition(pivot_i, start_i);
         _quicksort(new_pivot - 1, start_i);
-        _quicksort(count() - 1, new_pivot);
+        _quicksort(count() - 1, new_pivot + 1);
     }
 }
 
 int List::_partition(int pivot_i, int start_i)
 {
     int pivot_pos = start_i; // to keep track of where the pivot will be
-    bool swap = false;
     for (int i = start_i; i < pivot_i; i++)
     {
         if (_internal_arr[i] < _internal_arr[pivot_i])
@@ -54,15 +53,11 @@ int List::_partition(int pivot_i, int start_i)
             _internal_arr[pivot_pos] = _internal_arr[i];
             _internal_arr[i] = temp;
             pivot_pos++;
-            swap = true;
         }
     }
     int temp = _internal_arr[pivot_pos];
     _internal_arr[pivot_pos] = _internal_arr[pivot_i];
     _internal_arr[pivot_i] = temp;
-
-    if (!swap)
-        pivot_pos++;
 
     return pivot_pos;
 }
