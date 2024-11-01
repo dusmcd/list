@@ -116,16 +116,16 @@ bool test_add(int count)
 bool test_sort()
 {
     List list = List();
-    int nums[7] = {7, 3, 1, 2, -5, 10, 6};
-    int sorted_nums[7] = {-5, 1, 2, 3, 6, 7, 10};
+    int nums[7] = {-1, 6, 0, 1, 2, 10, 5};
+    int sorted_nums[7] = {-1, 0, 1, 2, 5, 6, 10};
     for (int i = 0; i < 7; i++)
         list.add(nums[i]);
     
-    List sorted_list = list.sort();
+    list.sort();
 
     for (int i = 0; i < 7; i++)
     {
-        if (sorted_list.get_val(i) != sorted_nums[i])
+        if (list.get_val(i) != sorted_nums[i])
             return false;
     }
 

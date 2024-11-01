@@ -11,8 +11,8 @@ class List
         int _size = 10;
         int _last_idx_val = -1;
         void _resize_arr();
-        List _merge_sort(const List *list);
-        List _merge(const List *left, const List *right);
+        void _quicksort(int pivot_i, int start_i);
+        int _partition(int pivot_i, int start_i);
         void _free_memory(int* i_pointer);
 
     public:
@@ -28,7 +28,7 @@ class List
         bool contains(int val) const;
         int get_val(int idx) const;
         void set_val(int idx, int val);
-        List sort();
+        void sort();
         List* slice(int start, int end) const;
         int count() const;
 };

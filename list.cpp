@@ -32,55 +32,39 @@ void List::_resize_arr()
     _size += 10;
 }
 
-List List::_merge_sort(const List *list)
+void List::_quicksort(int pivot_i, int start_i)
 {
-    if (list->count() == 1)
-        return *list;
-    
-    int middle = list->count() / 2;
-    List* left = list->slice(0, middle);
-    List* right = list->slice(middle, list->count());
-
-    List r_left = _merge_sort(left);
-    List r_right = _merge_sort(right);
-    return _merge(&r_left, &r_right);
+    if (pivot_i != start_i)
+    {
+        int new_pivot = _partition(pivot_i, start_i);
+        _quicksort(new_pivot - 1, start_i);
+        _quicksort(count() - 1, new_pivot);
+    }
 }
 
-List List::_merge(const List *left, const List *right)
+int List::_partition(int pivot_i, int start_i)
 {
-    List merged_list = List();
-    int left_i = 0;
-    int right_i = 0;
-
-    while(true)
+    int pivot_pos = start_i; // to keep track of where the pivot will be
+    bool swap = false;
+    for (int i = start_i; i < pivot_i; i++)
     {
-        if (left_i > left->count() - 1)
+        if (_internal_arr[i] < _internal_arr[pivot_i])
         {
-            // add the rest of the right array to the merged list
-            List* remaining = right->slice(right_i, right->count());
-            merged_list.extend(remaining);
-            break;
-        }
-        else if (right_i > right->count() - 1)
-        {
-            // add the rest of the left array to the merged list
-            List* remaining = left->slice(left_i, left->count());
-            merged_list.extend(remaining);
-            break;
-        }
-        else if (left->get_val(left_i) <= right->get_val(right_i))
-        {
-            merged_list.add(left->get_val(left_i));
-            left_i++;
-        }
-        else if (right->get_val(right_i) <= left->get_val(left_i))
-        {
-            merged_list.add(right->get_val(right_i));
-            right_i++;
+            int temp = _internal_arr[pivot_pos];
+            _internal_arr[pivot_pos] = _internal_arr[i];
+            _internal_arr[i] = temp;
+            pivot_pos++;
+            swap = true;
         }
     }
+    int temp = _internal_arr[pivot_pos];
+    _internal_arr[pivot_pos] = _internal_arr[pivot_i];
+    _internal_arr[pivot_i] = temp;
 
-    return merged_list;
+    if (!swap)
+        pivot_pos++;
+
+    return pivot_pos;
 }
 
 
@@ -146,9 +130,10 @@ List* List::slice(int start, int end) const
     
 }
 
-List List::sort()
+void List::sort()
 {
-    return _merge_sort(this);
+    // pivot will always be the last element
+    _quicksort(count() - 1, 0);
 }
 
 void List::extend(const List *list)
