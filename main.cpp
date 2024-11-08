@@ -16,11 +16,22 @@ bool test_sort();
 bool test_extend();
 bool test_find();
 bool test_contains();
+bool test_where();
 void run_tests();
 
+void print_item(int item)
+{
+    cout << item << " ";
+}
 int main()
 {
 
+    List list = List();
+    for (int i = 0; i < 6; i++)
+        list.add(i * 8);
+    
+    list.forEach(print_item);
+    cout << endl;
     run_tests();
 
     return 0;
@@ -28,7 +39,7 @@ int main()
 
 void run_tests()
 {
-    int total = 6;
+    int total = 7;
     int passed = 0;
 
     if (test_add(15))
@@ -74,6 +85,13 @@ void run_tests()
     }
     else
         cout << "test_contains failed" << endl;
+    if (test_where())
+    {
+        cout << "test_where passed" << endl;
+        passed++;
+    }
+    else
+        cout << "test_where failed" << endl;
 
     cout << passed << " of " << total << " tests passed." << endl;
 }
@@ -178,4 +196,28 @@ bool test_contains()
         list.add(nums[i]);
     
     return list.contains(3) && !list.contains(10);
+}
+
+bool is_even(int num)
+{
+    return num % 2 == 0;
+}
+bool test_where()
+{
+    List list = List();
+    List* filtered_list;
+
+    for (int i = 0; i < 8; i++)
+        list.add(i + 1);
+    
+    filtered_list = list.where(is_even);
+
+    for (int i = 0; i < filtered_list->count(); i++)
+    {
+        if (filtered_list->get_val(i) % 2 != 0)
+            return false;
+    }
+
+    delete filtered_list;
+    return true;
 }

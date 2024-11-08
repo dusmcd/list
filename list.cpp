@@ -166,3 +166,21 @@ List::~List()
 {
     _free_memory(_internal_arr);
 }
+
+void List::forEach(void (*callback)(int))
+{
+    for (int i = 0; i < count(); i++)
+        callback(get_val(i));
+}
+
+List* List::where(bool (*callback)(int))
+{
+    List* list = new List();
+    for (int i = 0; i < count(); i++)
+    {
+        if (callback(get_val(i)))
+            list->add(get_val(i));
+    }
+
+    return list;
+}

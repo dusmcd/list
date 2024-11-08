@@ -29,8 +29,14 @@ class List
         int get_val(int idx) const;
         void set_val(int idx, int val);
         void sort();
+        
+        // don't forget to free this pointer after use
         List* slice(int start, int end) const;
         int count() const;
+        void forEach(void (*callback)(int));
+
+        // don't forget to free up this pointer after use
+        List* where(bool (*callback)(int));
 };
 
 
