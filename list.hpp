@@ -37,6 +37,8 @@ class List
 
         // don't forget to free up this pointer after use
         List* where(bool (*callback)(int));
+
+        int operator[](int i) const;
 };
 
 

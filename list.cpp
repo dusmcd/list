@@ -184,3 +184,8 @@ List* List::where(bool (*callback)(int))
 
     return list;
 }
+
+int List::operator[](int i) const
+{
+    return get_val(i);
+}

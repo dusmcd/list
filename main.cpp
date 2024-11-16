@@ -17,6 +17,7 @@ bool test_extend();
 bool test_find();
 bool test_contains();
 bool test_where();
+bool test_operator();
 void run_tests();
 
 void print_item(int item)
@@ -39,7 +40,7 @@ int main()
 
 void run_tests()
 {
-    int total = 7;
+    int total = 8;
     int passed = 0;
 
     if (test_add(15))
@@ -92,6 +93,13 @@ void run_tests()
     }
     else
         cout << "test_where failed" << endl;
+    if (test_operator())
+    {
+        cout << "test_operator passed" << endl;
+        passed++;
+    }
+    else
+        cout << "test_operator failed" << endl;
 
     cout << passed << " of " << total << " tests passed." << endl;
 }
@@ -219,5 +227,20 @@ bool test_where()
     }
 
     delete filtered_list;
+    return true;
+}
+
+bool test_operator()
+{
+    List list = List();
+    for (int i = 0; i < 7; i++)
+        list.add(i + 1);
+    
+    for(int i = 0; i < 7; i++)
+    {
+        if (list[i] != list.get_val(i))
+            return false;
+    }
+
     return true;
 }
